@@ -13,7 +13,18 @@ import (
 const port=":50001"
 
 type Server struct {
-	pb.CallMeJohnServer
+	pb.UnimplementedCallMeJohnServer
+}
+
+func (s *Server) Call(req *pb.CallRequest) (*pb.CallResponse, error) {
+	resp := &pb.CallResponse{}
+	switch req.GetName() {
+	case "john", "JOHN", "John":
+		resp.Message = "Hi."
+	default:
+		resp.Message = "Please call me John."
+	}
+	return resp, nil
 }
 
 func main() {
