@@ -7,6 +7,10 @@
 package pb
 
 import (
+	context "context"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -206,4 +210,118 @@ func file_calc_proto_init() {
 	file_calc_proto_rawDesc = nil
 	file_calc_proto_goTypes = nil
 	file_calc_proto_depIdxs = nil
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConnInterface
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion6
+
+// CalcClient is the client API for Calc service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type CalcClient interface {
+	Calc(ctx context.Context, opts ...grpc.CallOption) (Calc_CalcClient, error)
+}
+
+type calcClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewCalcClient(cc grpc.ClientConnInterface) CalcClient {
+	return &calcClient{cc}
+}
+
+func (c *calcClient) Calc(ctx context.Context, opts ...grpc.CallOption) (Calc_CalcClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Calc_serviceDesc.Streams[0], "/calc.Calc/Calc", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &calcCalcClient{stream}
+	return x, nil
+}
+
+type Calc_CalcClient interface {
+	Send(*CalcRequest) error
+	CloseAndRecv() (*CalcResponse, error)
+	grpc.ClientStream
+}
+
+type calcCalcClient struct {
+	grpc.ClientStream
+}
+
+func (x *calcCalcClient) Send(m *CalcRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *calcCalcClient) CloseAndRecv() (*CalcResponse, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(CalcResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// CalcServer is the server API for Calc service.
+type CalcServer interface {
+	Calc(Calc_CalcServer) error
+}
+
+// UnimplementedCalcServer can be embedded to have forward compatible implementations.
+type UnimplementedCalcServer struct {
+}
+
+func (*UnimplementedCalcServer) Calc(Calc_CalcServer) error {
+	return status.Errorf(codes.Unimplemented, "method Calc not implemented")
+}
+
+func RegisterCalcServer(s *grpc.Server, srv CalcServer) {
+	s.RegisterService(&_Calc_serviceDesc, srv)
+}
+
+func _Calc_Calc_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(CalcServer).Calc(&calcCalcServer{stream})
+}
+
+type Calc_CalcServer interface {
+	SendAndClose(*CalcResponse) error
+	Recv() (*CalcRequest, error)
+	grpc.ServerStream
+}
+
+type calcCalcServer struct {
+	grpc.ServerStream
+}
+
+func (x *calcCalcServer) SendAndClose(m *CalcResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *calcCalcServer) Recv() (*CalcRequest, error) {
+	m := new(CalcRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+var _Calc_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "calc.Calc",
+	HandlerType: (*CalcServer)(nil),
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Calc",
+			Handler:       _Calc_Calc_Handler,
+			ClientStreams: true,
+		},
+	},
+	Metadata: "calc.proto",
 }
