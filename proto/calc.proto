@@ -1,0 +1,16 @@
+syntax = "proto3";
+package calc;
+
+option go_package = "gen/pb";
+
+service Calc {
+  rpc Calc (stream CalcRequest) returns (CalcResponse) {}
+}
+
+message CalcRequest {
+  int32 num = 1;
+}
+
+message CalcResponse {
+  string message = 1;
+}

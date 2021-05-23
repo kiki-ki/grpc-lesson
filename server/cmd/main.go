@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 func main() {
 	fmt.Println("aaa")
+	errors.New("aaa")
 }
