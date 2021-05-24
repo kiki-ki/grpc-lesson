@@ -13,11 +13,11 @@ import (
 const port=":50001"
 
 type Server struct {
-	pb.UnimplementedCallMeJohnServer
+	pb.UnimplementedCallServer
 }
 
-func (s *Server) Call(req *pb.CallRequest) (*pb.CallResponse, error) {
-	resp := &pb.CallResponse{}
+func (s *Server) CallMeJohn(req *pb.CallMeJohnRequest) (*pb.CallMeJohnResponse, error) {
+	resp := &pb.CallMeJohnResponse{}
 	switch req.GetName() {
 	case "john", "JOHN", "John":
 		resp.Message = "Hi."
@@ -41,7 +41,7 @@ func set() error {
 	}
 	s := grpc.NewServer()
 	var server Server
-	pb.RegisterCallMeJohnServer(s, &server)
+	pb.RegisterCallServer(s, &server)
 	if err := s.Serve(lis); err != nil {
 		return errors.New("serve is failed")
 	}
