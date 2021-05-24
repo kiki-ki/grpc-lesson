@@ -6,6 +6,7 @@ run-client:
 APP_ROOT=${GOPATH}/src/github.com/kiki-ki/grpc-lesson/
 gen-proto:
 	protoc --proto_path ./proto --go_out=plugins=grpc:${APP_ROOT} ${FILENAME}
+	make gen-doc
 gen-doc:
 	protoc --doc_out=./proto/doc --doc_opt=html,index.html ./proto/*.proto
 
