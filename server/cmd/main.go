@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"grpc-lesson/gen/pb"
@@ -10,15 +11,15 @@ import (
 	"google.golang.org/grpc"
 )
 
-const port=":50001"
+const port=":50051"
 
-type Server struct {
+type CallServer struct {
 	pb.UnimplementedCallServer
 }
 
-func (s *Server) CallMeJohn(req *pb.CallMeJohnRequest) (*pb.CallMeJohnResponse, error) {
+func (s *CallServer) CallMeJohn(ctx context.Context, in *pb.CallMeJohnRequest) (*pb.CallMeJohnResponse, error) {
 	resp := &pb.CallMeJohnResponse{}
-	switch req.GetName() {
+	switch in.GetName() {
 	case "john", "JOHN", "John":
 		resp.Message = "Hi."
 	default:
@@ -40,8 +41,7 @@ func set() error {
 		log.Fatalln(err)
 	}
 	s := grpc.NewServer()
-	var server Server
-	pb.RegisterCallServer(s, &server)
+	pb.RegisterCallServer(s, &CallServer{})
 	if err := s.Serve(lis); err != nil {
 		return errors.New("serve is failed")
 	}

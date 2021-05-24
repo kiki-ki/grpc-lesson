@@ -127,13 +127,13 @@ var file_call_proto_rawDesc = []byte{
 	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x2e, 0x0a, 0x12, 0x43,
 	0x61, 0x6c, 0x6c, 0x4d, 0x65, 0x4a, 0x6f, 0x68, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
 	0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x32, 0x4b, 0x0a, 0x04, 0x43,
-	0x61, 0x6c, 0x6c, 0x12, 0x43, 0x0a, 0x0a, 0x43, 0x61, 0x6c, 0x6c, 0x4d, 0x65, 0x4a, 0x6f, 0x68,
+	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x32, 0x49, 0x0a, 0x04, 0x43,
+	0x61, 0x6c, 0x6c, 0x12, 0x41, 0x0a, 0x0a, 0x43, 0x61, 0x6c, 0x6c, 0x4d, 0x65, 0x4a, 0x6f, 0x68,
 	0x6e, 0x12, 0x17, 0x2e, 0x63, 0x61, 0x6c, 0x6c, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x4d, 0x65, 0x4a,
 	0x6f, 0x68, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x63, 0x61, 0x6c,
 	0x6c, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x4d, 0x65, 0x4a, 0x6f, 0x68, 0x6e, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x28, 0x01, 0x42, 0x08, 0x5a, 0x06, 0x67, 0x65, 0x6e, 0x2f,
-	0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x08, 0x5a, 0x06, 0x67, 0x65, 0x6e, 0x2f, 0x70, 0x62,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -226,7 +226,7 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type CallClient interface {
-	CallMeJohn(ctx context.Context, opts ...grpc.CallOption) (Call_CallMeJohnClient, error)
+	CallMeJohn(ctx context.Context, in *CallMeJohnRequest, opts ...grpc.CallOption) (*CallMeJohnResponse, error)
 }
 
 type callClient struct {
@@ -237,93 +237,59 @@ func NewCallClient(cc grpc.ClientConnInterface) CallClient {
 	return &callClient{cc}
 }
 
-func (c *callClient) CallMeJohn(ctx context.Context, opts ...grpc.CallOption) (Call_CallMeJohnClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Call_serviceDesc.Streams[0], "/call.Call/CallMeJohn", opts...)
+func (c *callClient) CallMeJohn(ctx context.Context, in *CallMeJohnRequest, opts ...grpc.CallOption) (*CallMeJohnResponse, error) {
+	out := new(CallMeJohnResponse)
+	err := c.cc.Invoke(ctx, "/call.Call/CallMeJohn", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &callCallMeJohnClient{stream}
-	return x, nil
-}
-
-type Call_CallMeJohnClient interface {
-	Send(*CallMeJohnRequest) error
-	CloseAndRecv() (*CallMeJohnResponse, error)
-	grpc.ClientStream
-}
-
-type callCallMeJohnClient struct {
-	grpc.ClientStream
-}
-
-func (x *callCallMeJohnClient) Send(m *CallMeJohnRequest) error {
-	return x.ClientStream.SendMsg(m)
-}
-
-func (x *callCallMeJohnClient) CloseAndRecv() (*CallMeJohnResponse, error) {
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	m := new(CallMeJohnResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 // CallServer is the server API for Call service.
 type CallServer interface {
-	CallMeJohn(Call_CallMeJohnServer) error
+	CallMeJohn(context.Context, *CallMeJohnRequest) (*CallMeJohnResponse, error)
 }
 
 // UnimplementedCallServer can be embedded to have forward compatible implementations.
 type UnimplementedCallServer struct {
 }
 
-func (*UnimplementedCallServer) CallMeJohn(Call_CallMeJohnServer) error {
-	return status.Errorf(codes.Unimplemented, "method CallMeJohn not implemented")
+func (*UnimplementedCallServer) CallMeJohn(context.Context, *CallMeJohnRequest) (*CallMeJohnResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CallMeJohn not implemented")
 }
 
 func RegisterCallServer(s *grpc.Server, srv CallServer) {
 	s.RegisterService(&_Call_serviceDesc, srv)
 }
 
-func _Call_CallMeJohn_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(CallServer).CallMeJohn(&callCallMeJohnServer{stream})
-}
-
-type Call_CallMeJohnServer interface {
-	SendAndClose(*CallMeJohnResponse) error
-	Recv() (*CallMeJohnRequest, error)
-	grpc.ServerStream
-}
-
-type callCallMeJohnServer struct {
-	grpc.ServerStream
-}
-
-func (x *callCallMeJohnServer) SendAndClose(m *CallMeJohnResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func (x *callCallMeJohnServer) Recv() (*CallMeJohnRequest, error) {
-	m := new(CallMeJohnRequest)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
+func _Call_CallMeJohn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CallMeJohnRequest)
+	if err := dec(in); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if interceptor == nil {
+		return srv.(CallServer).CallMeJohn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/call.Call/CallMeJohn",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CallServer).CallMeJohn(ctx, req.(*CallMeJohnRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 var _Call_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "call.Call",
 	HandlerType: (*CallServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams: []grpc.StreamDesc{
+	Methods: []grpc.MethodDesc{
 		{
-			StreamName:    "CallMeJohn",
-			Handler:       _Call_CallMeJohn_Handler,
-			ClientStreams: true,
+			MethodName: "CallMeJohn",
+			Handler:    _Call_CallMeJohn_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "call.proto",
 }

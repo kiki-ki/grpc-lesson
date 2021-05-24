@@ -4,7 +4,7 @@ package call;
 option go_package = "gen/pb";
 
 service Call {
-  rpc CallMeJohn (stream CallMeJohnRequest) returns (CallMeJohnResponse) {}
+  rpc CallMeJohn (CallMeJohnRequest) returns (CallMeJohnResponse) {}
 }
 
 message CallMeJohnRequest {
