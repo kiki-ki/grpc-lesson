@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-const port=":50051"
+const port = ":50051"
 
 type CallServer struct {
 	pb.UnimplementedCallServer
