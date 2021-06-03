@@ -17,14 +17,9 @@ type CallServer struct {
 	pb.UnimplementedCallServer
 }
 
-func (s *CallServer) CallMeJohn(ctx context.Context, in *pb.CallMeJohnRequest) (*pb.CallMeJohnResponse, error) {
-	resp := &pb.CallMeJohnResponse{}
-	switch in.GetName() {
-	case "john", "JOHN", "John":
-		resp.Message = "Hi."
-	default:
-		resp.Message = "Please call me John."
-	}
+func (s *CallServer) Call(ctx context.Context, in *pb.CallRequest) (*pb.CallResponse, error) {
+	resp := &pb.CallResponse{}
+	resp.Message = fmt.Sprintf("Hello %s!!", in.GetName())
 	return resp, nil
 }
 

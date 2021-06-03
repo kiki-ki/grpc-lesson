@@ -22,7 +22,7 @@ func main() {
 	c := pb.NewCallClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	resp, err := c.CallMeJohn(ctx, &pb.CallMeJohnRequest{Name: "hoge"})
+	resp, err := c.Call(ctx, &pb.CallRequest{Name: "John"})
 	if err != nil {
 		log.Fatalf("could not call: %v", err)
 	}

@@ -8,14 +8,13 @@ package pb
 
 import (
 	context "context"
-	reflect "reflect"
-	sync "sync"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	reflect "reflect"
+	sync "sync"
 )
 
 const (
@@ -25,7 +24,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type CallMeJohnRequest struct {
+type CallRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -33,8 +32,8 @@ type CallMeJohnRequest struct {
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 }
 
-func (x *CallMeJohnRequest) Reset() {
-	*x = CallMeJohnRequest{}
+func (x *CallRequest) Reset() {
+	*x = CallRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_call_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -42,13 +41,13 @@ func (x *CallMeJohnRequest) Reset() {
 	}
 }
 
-func (x *CallMeJohnRequest) String() string {
+func (x *CallRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CallMeJohnRequest) ProtoMessage() {}
+func (*CallRequest) ProtoMessage() {}
 
-func (x *CallMeJohnRequest) ProtoReflect() protoreflect.Message {
+func (x *CallRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_call_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -60,19 +59,19 @@ func (x *CallMeJohnRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CallMeJohnRequest.ProtoReflect.Descriptor instead.
-func (*CallMeJohnRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CallRequest.ProtoReflect.Descriptor instead.
+func (*CallRequest) Descriptor() ([]byte, []int) {
 	return file_call_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CallMeJohnRequest) GetName() string {
+func (x *CallRequest) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-type CallMeJohnResponse struct {
+type CallResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -80,8 +79,8 @@ type CallMeJohnResponse struct {
 	Message string `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 }
 
-func (x *CallMeJohnResponse) Reset() {
-	*x = CallMeJohnResponse{}
+func (x *CallResponse) Reset() {
+	*x = CallResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_call_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -89,13 +88,13 @@ func (x *CallMeJohnResponse) Reset() {
 	}
 }
 
-func (x *CallMeJohnResponse) String() string {
+func (x *CallResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CallMeJohnResponse) ProtoMessage() {}
+func (*CallResponse) ProtoMessage() {}
 
-func (x *CallMeJohnResponse) ProtoReflect() protoreflect.Message {
+func (x *CallResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_call_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -107,12 +106,12 @@ func (x *CallMeJohnResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CallMeJohnResponse.ProtoReflect.Descriptor instead.
-func (*CallMeJohnResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CallResponse.ProtoReflect.Descriptor instead.
+func (*CallResponse) Descriptor() ([]byte, []int) {
 	return file_call_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CallMeJohnResponse) GetMessage() string {
+func (x *CallResponse) GetMessage() string {
 	if x != nil {
 		return x.Message
 	}
@@ -123,18 +122,16 @@ var File_call_proto protoreflect.FileDescriptor
 
 var file_call_proto_rawDesc = []byte{
 	0x0a, 0x0a, 0x63, 0x61, 0x6c, 0x6c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x04, 0x63, 0x61,
-	0x6c, 0x6c, 0x22, 0x27, 0x0a, 0x11, 0x43, 0x61, 0x6c, 0x6c, 0x4d, 0x65, 0x4a, 0x6f, 0x68, 0x6e,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x2e, 0x0a, 0x12, 0x43,
-	0x61, 0x6c, 0x6c, 0x4d, 0x65, 0x4a, 0x6f, 0x68, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x32, 0x49, 0x0a, 0x04, 0x43,
-	0x61, 0x6c, 0x6c, 0x12, 0x41, 0x0a, 0x0a, 0x43, 0x61, 0x6c, 0x6c, 0x4d, 0x65, 0x4a, 0x6f, 0x68,
-	0x6e, 0x12, 0x17, 0x2e, 0x63, 0x61, 0x6c, 0x6c, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x4d, 0x65, 0x4a,
-	0x6f, 0x68, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x63, 0x61, 0x6c,
-	0x6c, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x4d, 0x65, 0x4a, 0x6f, 0x68, 0x6e, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x08, 0x5a, 0x06, 0x67, 0x65, 0x6e, 0x2f, 0x70, 0x62,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6c, 0x6c, 0x22, 0x21, 0x0a, 0x0b, 0x43, 0x61, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x28, 0x0a, 0x0c, 0x43, 0x61, 0x6c, 0x6c, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x32,
+	0x37, 0x0a, 0x04, 0x43, 0x61, 0x6c, 0x6c, 0x12, 0x2f, 0x0a, 0x04, 0x43, 0x61, 0x6c, 0x6c, 0x12,
+	0x11, 0x2e, 0x63, 0x61, 0x6c, 0x6c, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x12, 0x2e, 0x63, 0x61, 0x6c, 0x6c, 0x2e, 0x43, 0x61, 0x6c, 0x6c, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x08, 0x5a, 0x06, 0x67, 0x65, 0x6e, 0x2f,
+	0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -151,12 +148,12 @@ func file_call_proto_rawDescGZIP() []byte {
 
 var file_call_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_call_proto_goTypes = []interface{}{
-	(*CallMeJohnRequest)(nil),  // 0: call.CallMeJohnRequest
-	(*CallMeJohnResponse)(nil), // 1: call.CallMeJohnResponse
+	(*CallRequest)(nil),  // 0: call.CallRequest
+	(*CallResponse)(nil), // 1: call.CallResponse
 }
 var file_call_proto_depIdxs = []int32{
-	0, // 0: call.Call.CallMeJohn:input_type -> call.CallMeJohnRequest
-	1, // 1: call.Call.CallMeJohn:output_type -> call.CallMeJohnResponse
+	0, // 0: call.Call.Call:input_type -> call.CallRequest
+	1, // 1: call.Call.Call:output_type -> call.CallResponse
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -171,7 +168,7 @@ func file_call_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_call_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CallMeJohnRequest); i {
+			switch v := v.(*CallRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -183,7 +180,7 @@ func file_call_proto_init() {
 			}
 		}
 		file_call_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CallMeJohnResponse); i {
+			switch v := v.(*CallResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -227,7 +224,8 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type CallClient interface {
-	CallMeJohn(ctx context.Context, in *CallMeJohnRequest, opts ...grpc.CallOption) (*CallMeJohnResponse, error)
+	// Unary: Request:Response = 1:1
+	Call(ctx context.Context, in *CallRequest, opts ...grpc.CallOption) (*CallResponse, error)
 }
 
 type callClient struct {
@@ -238,9 +236,9 @@ func NewCallClient(cc grpc.ClientConnInterface) CallClient {
 	return &callClient{cc}
 }
 
-func (c *callClient) CallMeJohn(ctx context.Context, in *CallMeJohnRequest, opts ...grpc.CallOption) (*CallMeJohnResponse, error) {
-	out := new(CallMeJohnResponse)
-	err := c.cc.Invoke(ctx, "/call.Call/CallMeJohn", in, out, opts...)
+func (c *callClient) Call(ctx context.Context, in *CallRequest, opts ...grpc.CallOption) (*CallResponse, error) {
+	out := new(CallResponse)
+	err := c.cc.Invoke(ctx, "/call.Call/Call", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -249,35 +247,36 @@ func (c *callClient) CallMeJohn(ctx context.Context, in *CallMeJohnRequest, opts
 
 // CallServer is the server API for Call service.
 type CallServer interface {
-	CallMeJohn(context.Context, *CallMeJohnRequest) (*CallMeJohnResponse, error)
+	// Unary: Request:Response = 1:1
+	Call(context.Context, *CallRequest) (*CallResponse, error)
 }
 
 // UnimplementedCallServer can be embedded to have forward compatible implementations.
 type UnimplementedCallServer struct {
 }
 
-func (*UnimplementedCallServer) CallMeJohn(context.Context, *CallMeJohnRequest) (*CallMeJohnResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CallMeJohn not implemented")
+func (*UnimplementedCallServer) Call(context.Context, *CallRequest) (*CallResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Call not implemented")
 }
 
 func RegisterCallServer(s *grpc.Server, srv CallServer) {
 	s.RegisterService(&_Call_serviceDesc, srv)
 }
 
-func _Call_CallMeJohn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CallMeJohnRequest)
+func _Call_Call_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CallRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CallServer).CallMeJohn(ctx, in)
+		return srv.(CallServer).Call(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/call.Call/CallMeJohn",
+		FullMethod: "/call.Call/Call",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CallServer).CallMeJohn(ctx, req.(*CallMeJohnRequest))
+		return srv.(CallServer).Call(ctx, req.(*CallRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -287,8 +286,8 @@ var _Call_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*CallServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CallMeJohn",
-			Handler:    _Call_CallMeJohn_Handler,
+			MethodName: "Call",
+			Handler:    _Call_Call_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
