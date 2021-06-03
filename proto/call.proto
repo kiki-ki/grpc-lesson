@@ -1,5 +1,5 @@
 syntax = "proto3";
-package unary;
+package call;
 
 option go_package = "gen/pb";
 
