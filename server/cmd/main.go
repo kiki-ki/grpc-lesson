@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"grpc-lesson/gen/pb"
+	"io"
 	"log"
 	"net"
 
@@ -19,8 +20,22 @@ type CallServer struct {
 
 func (s *CallServer) Call(ctx context.Context, in *pb.CallRequest) (*pb.CallResponse, error) {
 	resp := &pb.CallResponse{}
-	resp.Message = fmt.Sprintf("Hello. I'm %s.", in.GetName())
+	resp.Message = fmt.Sprintf("Hello. I'm %s", in.GetName())
 	return resp, nil
+}
+
+func (s *CallServer) BulkCall(stream pb.Call_BulkCallServer) error {
+	message := "Hello. We're"
+	for {
+		in, err := stream.Recv()
+		if err == io.EOF {
+			return stream.SendAndClose(&pb.CallResponse{Message: message})
+		}
+		if err != nil {
+			return err
+		}
+		message = fmt.Sprintf("%s %s", message, in.GetName())
+	}
 }
 
 func main() {
