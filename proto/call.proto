@@ -9,7 +9,7 @@ service Call {
   // ClientStreaming Request:Response = N:1
   rpc ClientStreamingCall (stream CallRequest) returns (CallResponse) {}
   // ServerStreaming Request:Response = 1:N
-  rpc ServerStreamingCall (CallRequest) returns (stream CallResponse) {}
+  rpc ServerStreamingCall (ServerStreamingCallRequest) returns (stream CallResponse) {}
 }
 
 message CallRequest {
@@ -18,4 +18,9 @@ message CallRequest {
 
 message CallResponse {
   string message = 1;
+}
+
+message ServerStreamingCallRequest {
+  string name = 1;
+  int32 responseCnt = 2;
 }

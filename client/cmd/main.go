@@ -14,21 +14,24 @@ const (
 	address = "localhost:50051"
 )
 
-func runUnaryCall(c pb.CallClient, in *pb.CallRequest) error {
+func runUnaryCall(c pb.CallClient, name string) error {
 	log.Println("--- Unary ---")
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	in := &pb.CallRequest{Name: name}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
-	resp, err := c.UnaryCall(ctx, in)
+	res, err := c.UnaryCall(ctx, in)
 	if err != nil {
 		return err
 	}
-	log.Printf("response: %s\n", resp.GetMessage())
+	log.Printf("response: %s\n", res.GetMessage())
 	return nil
 }
 
 func runClientStreamingCall(c pb.CallClient, names []string) error {
 	log.Println("--- ClientStreaming ---")
-	stream, err := c.ClientStreamingCall(context.Background())
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+	stream, err := c.ClientStreamingCall(ctx)
 	if err != nil {
 		return err
 	}
@@ -50,6 +53,28 @@ func runClientStreamingCall(c pb.CallClient, names []string) error {
 	return nil
 }
 
+func runServerStreamingCall(c pb.CallClient, name string, responseCnt int32) error {
+	log.Println("--- ServerStreaming ---")
+	in := &pb.ServerStreamingCallRequest{Name: name, ResponseCnt: responseCnt}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
+	defer cancel()
+	stream, err := c.ServerStreamingCall(ctx, in)
+	if err != nil {
+		return err
+	}
+	for {
+		res, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return err
+		}
+		log.Printf("response: %s", res.GetMessage())
+	}
+	return nil
+}
+
 func main() {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
@@ -58,12 +83,13 @@ func main() {
 	defer conn.Close()
 	c := pb.NewCallClient(conn)
 
-	err = runUnaryCall(c, &pb.CallRequest{Name: "John"})
-	if err != nil {
+	if err = runUnaryCall(c, "John"); err != nil {
 		log.Fatalln(err)
 	}
-	err = runClientStreamingCall(c, []string{"John", "Paul", "George", "Ringo"})
-	if err != nil {
+	if err = runClientStreamingCall(c, []string{"John", "Paul", "George", "Ringo"}); err != nil {
+		log.Fatalln(err)
+	}
+	if err = runServerStreamingCall(c, "John", 10); err != nil {
 		log.Fatalln(err)
 	}
 }

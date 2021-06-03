@@ -186,6 +186,10 @@
                   <a href="#call.CallResponse"><span class="badge">M</span>CallResponse</a>
                 </li>
               
+                <li>
+                  <a href="#call.ServerStreamingCallRequest"><span class="badge">M</span>ServerStreamingCallRequest</a>
+                </li>
+              
               
               
               
@@ -256,6 +260,37 @@
 
         
       
+        <h3 id="call.ServerStreamingCallRequest">ServerStreamingCallRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>name</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>responseCnt</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
 
       
 
@@ -286,7 +321,7 @@
             
               <tr>
                 <td>ServerStreamingCall</td>
-                <td><a href="#call.CallRequest">CallRequest</a></td>
+                <td><a href="#call.ServerStreamingCallRequest">ServerStreamingCallRequest</a></td>
                 <td><a href="#call.CallResponse">CallResponse</a> stream</td>
                 <td><p>ServerStreaming Request:Response = 1:N</p></td>
               </tr>

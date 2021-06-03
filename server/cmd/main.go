@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"time"
 
 	"google.golang.org/grpc"
 )
@@ -40,6 +41,22 @@ func (s *CallServer) ClientStreamingCall(stream pb.Call_ClientStreamingCallServe
 		log.Printf("request: %s\n", in.GetName())
 		message = fmt.Sprintf("%s %s", message, in.GetName())
 	}
+}
+
+func (s *CallServer) ServerStreamingCall(in *pb.ServerStreamingCallRequest, stream pb.Call_ServerStreamingCallServer) error {
+	log.Println("--- ClientStreaming ---")
+	log.Printf("request: %s\n", in.GetName())
+	message := fmt.Sprintf("Hello. I'm %s", in.GetName())
+	for i := int32(1); i <= in.ResponseCnt; i++ {
+		if 5 < i {
+			message = "I'm so tired"
+		}
+		if err := stream.Send(&pb.CallResponse{Message: message}); err != nil {
+			return err
+		}
+		time.Sleep(time.Second)
+	}
+	return nil
 }
 
 func main() {
