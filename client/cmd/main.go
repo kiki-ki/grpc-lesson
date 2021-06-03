@@ -16,7 +16,6 @@ const (
 
 func runCall(c pb.CallClient, in *pb.CallRequest) error {
 	log.Println("--- Unary ---")
-	log.Printf("request: %s\n", in.GetName())
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	resp, err := c.Call(ctx, in)
@@ -35,14 +34,13 @@ func runBulkCall(c pb.CallClient, names []string) error {
 	}
 	for _, name := range names {
 		in := &pb.CallRequest{Name: name}
-		log.Printf("request: %s\n", in.GetName())
 		if err := stream.Send(in); err != nil {
 			if err == io.EOF {
 				break
 			}
 			return err
 		}
-		time.Sleep(time.Second * 1)
+		time.Sleep(time.Second)
 	}
 	res, err := stream.CloseAndRecv()
 	if err != nil {

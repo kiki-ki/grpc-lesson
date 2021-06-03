@@ -19,12 +19,15 @@ type CallServer struct {
 }
 
 func (s *CallServer) Call(ctx context.Context, in *pb.CallRequest) (*pb.CallResponse, error) {
+	log.Println("--- Unary ---")
+	log.Printf("request: %s\n", in.GetName())
 	resp := &pb.CallResponse{}
 	resp.Message = fmt.Sprintf("Hello. I'm %s", in.GetName())
 	return resp, nil
 }
 
 func (s *CallServer) BulkCall(stream pb.Call_BulkCallServer) error {
+	log.Println("--- ClientStreaming ---")
 	message := "Hello. We're"
 	for {
 		in, err := stream.Recv()
@@ -34,6 +37,7 @@ func (s *CallServer) BulkCall(stream pb.Call_BulkCallServer) error {
 		if err != nil {
 			return err
 		}
+		log.Printf("request: %s\n", in.GetName())
 		message = fmt.Sprintf("%s %s", message, in.GetName())
 	}
 }
