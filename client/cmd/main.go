@@ -16,14 +16,14 @@ const (
 
 func runCall(c pb.CallClient, in *pb.CallRequest) error {
 	log.Println("--- Unary ---")
-	log.Printf("request: %#v\n", in)
+	log.Printf("request: %s\n", in.GetName())
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	resp, err := c.Call(ctx, in)
 	if err != nil {
 		return err
 	}
-	log.Printf("response:%#v\n", resp)
+	log.Printf("response: %s\n", resp.GetMessage())
 	return nil
 }
 
@@ -35,7 +35,7 @@ func runBulkCall(c pb.CallClient, names []string) error {
 	}
 	for _, name := range names {
 		in := &pb.CallRequest{Name: name}
-		log.Printf("request: %#v\n", in)
+		log.Printf("request: %s\n", in.GetName())
 		if err := stream.Send(in); err != nil {
 			if err == io.EOF {
 				break
@@ -48,7 +48,7 @@ func runBulkCall(c pb.CallClient, names []string) error {
 	if err != nil {
 		return err
 	}
-	log.Printf("response: %#v", res)
+	log.Printf("response: %s", res.GetMessage())
 	return nil
 }
 
