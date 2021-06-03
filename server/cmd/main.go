@@ -19,7 +19,7 @@ type CallServer struct {
 
 func (s *CallServer) Call(ctx context.Context, in *pb.CallRequest) (*pb.CallResponse, error) {
 	resp := &pb.CallResponse{}
-	resp.Message = fmt.Sprintf("Hello %s!!", in.GetName())
+	resp.Message = fmt.Sprintf("Hello. I'm %s.", in.GetName())
 	return resp, nil
 }
 

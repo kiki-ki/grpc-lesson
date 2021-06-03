@@ -6,7 +6,8 @@ option go_package = "gen/pb";
 service Call {
   // Unary: Request:Response = 1:1
   rpc Call (CallRequest) returns (CallResponse) {}
-  // ServerStreaming: Request:Response = 1:1
+  // ClientStreaming: Request:Response = N:1
+  rpc BulkCall (stream CallRequest) returns (CallResponse) {}
 }
 
 message CallRequest {
