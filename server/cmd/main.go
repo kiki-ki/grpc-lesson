@@ -18,7 +18,7 @@ type CallServer struct {
 	pb.UnimplementedCallServer
 }
 
-func (s *CallServer) Call(ctx context.Context, in *pb.CallRequest) (*pb.CallResponse, error) {
+func (s *CallServer) UnaryCall(ctx context.Context, in *pb.CallRequest) (*pb.CallResponse, error) {
 	log.Println("--- Unary ---")
 	log.Printf("request: %s\n", in.GetName())
 	resp := &pb.CallResponse{}
@@ -26,7 +26,7 @@ func (s *CallServer) Call(ctx context.Context, in *pb.CallRequest) (*pb.CallResp
 	return resp, nil
 }
 
-func (s *CallServer) BulkCall(stream pb.Call_BulkCallServer) error {
+func (s *CallServer) ClientStreamingCall(stream pb.Call_ClientStreamingCallServer) error {
 	log.Println("--- ClientStreaming ---")
 	message := "Hello. We're"
 	for {

@@ -14,11 +14,11 @@ const (
 	address = "localhost:50051"
 )
 
-func runCall(c pb.CallClient, in *pb.CallRequest) error {
+func runUnaryCall(c pb.CallClient, in *pb.CallRequest) error {
 	log.Println("--- Unary ---")
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	resp, err := c.Call(ctx, in)
+	resp, err := c.UnaryCall(ctx, in)
 	if err != nil {
 		return err
 	}
@@ -26,9 +26,9 @@ func runCall(c pb.CallClient, in *pb.CallRequest) error {
 	return nil
 }
 
-func runBulkCall(c pb.CallClient, names []string) error {
+func runClientStreamingCall(c pb.CallClient, names []string) error {
 	log.Println("--- ClientStreaming ---")
-	stream, err := c.BulkCall(context.Background())
+	stream, err := c.ClientStreamingCall(context.Background())
 	if err != nil {
 		return err
 	}
@@ -58,11 +58,11 @@ func main() {
 	defer conn.Close()
 	c := pb.NewCallClient(conn)
 
-	err = runCall(c, &pb.CallRequest{Name: "John"})
+	err = runUnaryCall(c, &pb.CallRequest{Name: "John"})
 	if err != nil {
 		log.Fatalln(err)
 	}
-	err = runBulkCall(c, []string{"John", "Paul", "George", "Ringo"})
+	err = runClientStreamingCall(c, []string{"John", "Paul", "George", "Ringo"})
 	if err != nil {
 		log.Fatalln(err)
 	}
