@@ -14,16 +14,17 @@ const (
 	address = "localhost:50051"
 )
 
-func runCall(c pb.CallClient, in *pb.CallRequest) {
+func runCall(c pb.CallClient, in *pb.CallRequest) error {
 	log.Println("--- Unary ---")
 	log.Printf("request: %#v\n", in)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	resp, err := c.Call(ctx, in)
 	if err != nil {
-		log.Fatalf("could not call: %v", err)
+		return err
 	}
 	log.Printf("response:%#v\n", resp)
+	return nil
 }
 
 func runBulkCall(c pb.CallClient, names []string) error {
@@ -58,6 +59,13 @@ func main() {
 	}
 	defer conn.Close()
 	c := pb.NewCallClient(conn)
-	runCall(c, &pb.CallRequest{Name: "John"})
-	runBulkCall(c, []string{"John", "Paul", "George", "Ringo"})
+
+	err = runCall(c, &pb.CallRequest{Name: "John"})
+	if err != nil {
+		log.Fatalln(err)
+	}
+	err = runBulkCall(c, []string{"John", "Paul", "George", "Ringo"})
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
