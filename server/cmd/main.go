@@ -61,6 +61,26 @@ func (s *CallServer) ServerStreamingCall(in *pb.ServerStreamingCallRequest, stre
 	return nil
 }
 
+func (s *CallServer) BidirectionalStreamingCall(stream pb.Call_BidirectionalStreamingCallServer) error {
+	log.Println("--- BidirectionalStreaming ---")
+	counter := make(map[string]uint32)
+	for {
+		in, err := stream.Recv()
+		if err == io.EOF {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+		log.Printf("request: %s\n", in.GetName())
+		counter[in.Name] += 1
+		res := &pb.BidirectionalStreamingResponse{CallCounter: counter}
+		if err := stream.Send(res); err != nil {
+			return err
+		}
+	}
+}
+
 func main() {
 	fmt.Printf("server is listening on port%s\n", port)
 	if err := set(); err != nil {

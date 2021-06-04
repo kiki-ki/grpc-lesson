@@ -115,7 +115,7 @@ func recv(done chan struct{}, stream pb.Call_BidirectionalStreamingCallClient) {
 		if err != nil {
 			log.Fatalln(err)
 		}
-		log.Printf("response: %v\n", res)
+		log.Printf("response: %v\n", res.CallCounter)
 	}
 }
 
