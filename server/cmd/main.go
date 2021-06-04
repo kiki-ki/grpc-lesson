@@ -46,10 +46,12 @@ func (s *CallServer) ClientStreamingCall(stream pb.Call_ClientStreamingCallServe
 func (s *CallServer) ServerStreamingCall(in *pb.ServerStreamingCallRequest, stream pb.Call_ServerStreamingCallServer) error {
 	log.Println("--- ClientStreaming ---")
 	log.Printf("request: %s\n", in.GetName())
-	message := fmt.Sprintf("Hello. I'm %s", in.GetName())
+	var message string
 	for i := int32(1); i <= in.ResponseCnt; i++ {
-		if 5 < i {
-			message = "I'm so tired"
+		if i <= 5 {
+			message = fmt.Sprintf("Hello. I'm %s", in.GetName())
+		} else {
+			message = fmt.Sprintf("I'm so tired. (%s)", in.GetName())
 		}
 		if err := stream.Send(&pb.CallResponse{Message: message}); err != nil {
 			return err
