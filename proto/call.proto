@@ -22,5 +22,5 @@ message CallResponse {
 
 message ServerStreamingCallRequest {
   string name = 1;
-  int32 responseCnt = 2;
+  uint32 responseCnt = 2;
 }

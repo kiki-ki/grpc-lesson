@@ -53,7 +53,7 @@ func runClientStreamingCall(c pb.CallClient, names []string) error {
 	return nil
 }
 
-func runServerStreamingCall(c pb.CallClient, name string, responseCnt int32) error {
+func runServerStreamingCall(c pb.CallClient, name string, responseCnt uint32) error {
 	log.Println("--- ServerStreaming ---")
 	in := &pb.ServerStreamingCallRequest{Name: name, ResponseCnt: responseCnt}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
