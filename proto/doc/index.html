@@ -179,6 +179,14 @@
             <ul>
               
                 <li>
+                  <a href="#call.BidirectionalStreamingResponse"><span class="badge">M</span>BidirectionalStreamingResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#call.BidirectionalStreamingResponse.CallCounterEntry"><span class="badge">M</span>BidirectionalStreamingResponse.CallCounterEntry</a>
+                </li>
+              
+                <li>
                   <a href="#call.CallRequest"><span class="badge">M</span>CallRequest</a>
                 </li>
               
@@ -211,6 +219,61 @@
       </div>
       <p></p>
 
+      
+        <h3 id="call.BidirectionalStreamingResponse">BidirectionalStreamingResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>callCounter</td>
+                  <td><a href="#call.BidirectionalStreamingResponse.CallCounterEntry">BidirectionalStreamingResponse.CallCounterEntry</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="call.BidirectionalStreamingResponse.CallCounterEntry">BidirectionalStreamingResponse.CallCounterEntry</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>key</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>value</td>
+                  <td><a href="#uint32">uint32</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
       
         <h3 id="call.CallRequest">CallRequest</h3>
         <p></p>
@@ -324,6 +387,13 @@
                 <td><a href="#call.ServerStreamingCallRequest">ServerStreamingCallRequest</a></td>
                 <td><a href="#call.CallResponse">CallResponse</a> stream</td>
                 <td><p>ServerStreaming Request:Response = 1:N</p></td>
+              </tr>
+            
+              <tr>
+                <td>BidirectionalStreamingCall</td>
+                <td><a href="#call.CallRequest">CallRequest</a> stream</td>
+                <td><a href="#call.BidirectionalStreamingResponse">BidirectionalStreamingResponse</a> stream</td>
+                <td><p>BidirectionalStreaming Request:Response = N:N</p></td>
               </tr>
             
           </tbody>

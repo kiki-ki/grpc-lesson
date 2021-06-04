@@ -75,6 +75,50 @@ func runServerStreamingCall(c pb.CallClient, name string, responseCnt uint32) er
 	return nil
 }
 
+func runBidirectionalStreamingCall(c pb.CallClient, names []string) error {
+	log.Println("--- BidirectionalStreaming ---")
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+	stream, err := c.BidirectionalStreamingCall(ctx)
+	if err != nil {
+		return err
+	}
+	done := make(chan struct{})
+	go recv(done, stream)
+	if err := send(names, stream); err != nil {
+		return err
+	}
+	<- done
+	return nil
+}
+
+func send(names []string, stream pb.Call_BidirectionalStreamingCallClient) error {
+	for _, name := range names {
+		in := &pb.CallRequest{Name:name}
+		if err := stream.Send(in); err != nil {
+			return err
+		}
+	}
+	if err := stream.CloseSend(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func recv(done chan struct{}, stream pb.Call_BidirectionalStreamingCallClient) {
+	for {
+		res, err := stream.Recv()
+		if err == io.EOF {
+			close(done)
+			return
+		}
+		if err != nil {
+			log.Fatalln(err)
+		}
+		log.Printf("response: %v\n", res)
+	}
+}
+
 func main() {
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
@@ -86,10 +130,15 @@ func main() {
 	if err = runUnaryCall(c, "John"); err != nil {
 		log.Fatalln(err)
 	}
-	if err = runClientStreamingCall(c, []string{"John", "Paul", "George", "Ringo"}); err != nil {
+	names := []string{"John", "Paul", "George", "Ringo"}
+	if err = runClientStreamingCall(c, names); err != nil {
 		log.Fatalln(err)
 	}
 	if err = runServerStreamingCall(c, "John", 10); err != nil {
+		log.Fatalln(err)
+	}
+	names = []string{"John", "Paul", "John", "George", "Ringo", "Paul", "John", "Paul", "George", "John"}
+	if err = runBidirectionalStreamingCall(c, names); err != nil {
 		log.Fatalln(err)
 	}
 }

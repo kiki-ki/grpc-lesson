@@ -10,6 +10,8 @@ service Call {
   rpc ClientStreamingCall (stream CallRequest) returns (CallResponse) {}
   // ServerStreaming Request:Response = 1:N
   rpc ServerStreamingCall (ServerStreamingCallRequest) returns (stream CallResponse) {}
+  // BidirectionalStreaming Request:Response = N:N
+  rpc BidirectionalStreamingCall (stream CallRequest) returns (stream BidirectionalStreamingResponse) {}
 }
 
 message CallRequest {
@@ -23,4 +25,8 @@ message CallResponse {
 message ServerStreamingCallRequest {
   string name = 1;
   uint32 responseCnt = 2;
+}
+
+message BidirectionalStreamingResponse {
+  map<string, uint32> callCounter = 1;
 }
