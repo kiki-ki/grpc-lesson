@@ -12,6 +12,7 @@ gen-proto:
 
 gen-doc:
 	protoc --doc_out=./proto/doc --doc_opt=html,index.html ./proto/*.proto
+	protoc --doc_out=./proto/doc --doc_opt=markdown,index.md ./proto/*.proto
 
 lint:
 	golangci-lint run
