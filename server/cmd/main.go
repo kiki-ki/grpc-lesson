@@ -44,7 +44,7 @@ func (s *CallServer) ClientStreamingCall(stream pb.Call_ClientStreamingCallServe
 }
 
 func (s *CallServer) ServerStreamingCall(in *pb.ServerStreamingCallRequest, stream pb.Call_ServerStreamingCallServer) error {
-	log.Println("--- ClientStreaming ---")
+	log.Println("--- ServerStreaming ---")
 	log.Printf("request: %s\n", in.GetName())
 	var message string
 	for i := uint32(1); i <= in.ResponseCnt; i++ {
